@@ -58,16 +58,16 @@ background:transparent;cursor:pointer;pointer-events:auto
 }
 .hdAvatar.sel{border-color:#ffd126;box-shadow:0 0 0 .2vw #fff,0 0 .8vw #ffd126}
 .hdStart{
- position:absolute;z-index:100;
- left:27%;top:69%;width:54%;height:21%;
- border:0;background:transparent;cursor:pointer;border-radius:4vw;
- pointer-events:auto
+ position:absolute!important;z-index:999!important;
+ left:27.2%!important;top:72.5%!important;width:32.5%!important;height:16.5%!important;
+ display:block!important;border:0!important;background:transparent!important;
+ cursor:pointer!important;border-radius:4vw!important;pointer-events:auto!important;
 }
 .hdMusic{
- position:absolute;z-index:101;
- left:2%;top:78%;width:14%;height:20%;
- border:0;background:transparent;cursor:pointer;border-radius:2vw;
- pointer-events:auto
+ position:absolute!important;z-index:999!important;
+ left:2.5%!important;top:84.0%!important;width:16.5%!important;height:14.5%!important;
+ display:block!important;border:0!important;background:transparent!important;
+ cursor:pointer!important;pointer-events:auto!important;
 }
 
 
@@ -262,7 +262,7 @@ button:focus-visible,input:focus-visible{outline:4px solid #ffe45c;outline-offse
   <button class="hdAvatar" type="button" data-av="3" aria-label="Menino negro" onclick="chooseCharacter(3,this)"></button>
   <button class="hdAvatar" type="button" data-av="4" aria-label="Menina negra" onclick="chooseCharacter(4,this)"></button>
 </div>
-<button class="hdStart" type="button" aria-label="Começar" onclick="begin()"></button>
+<button class="hdStart" type="button" aria-label="Começar"></button>
 <button class="hdMusic" type="button" aria-label="Música" onclick="toggleMusic()"></button>
 </section>
 
@@ -354,6 +354,45 @@ let S={name:"Aventureiro",avatar:null,unlocked:1,done:[],stars:0,world:1,q:0,mus
 let ctx=null,timer=null,step=0;
 const melody=[523,659,784,659,587,698,880,698,523,659,784,1047,880,784,659,587];
 
+
+function updateMap(){
+ const mapScore=document.getElementById("mapScoreValue");
+ if(mapScore) mapScore.textContent=S.stars;
+ const allStars=document.getElementById("allStars");
+ if(allStars) allStars.textContent=S.stars;
+
+ const hotspots=[
+   document.querySelector(".mh1"),
+   document.querySelector(".mh2"),
+   document.querySelector(".mh3"),
+   document.querySelector(".mh4"),
+   document.querySelector(".mh5")
+ ];
+ hotspots.forEach((el,i)=>{
+   if(!el) return;
+   const world=i+1;
+   el.classList.toggle("lockedHot",world>S.unlocked);
+   el.setAttribute("aria-disabled",world>S.unlocked?"true":"false");
+ });
+}
+
+function openWorld(n){
+ if(n>S.unlocked){
+   toast("🔒 Complete a fase anterior!");
+   return;
+ }
+ S.world=n;
+ S.q=0;
+ S.sel=[];
+ lockedAnswer=false;
+ const art=document.getElementById("stageArt");
+ if(art) art.src=`assets/${arts[n]}`;
+ const title=document.getElementById("worldTitle");
+ if(title) title.textContent=worlds[n];
+ show("stage");
+ render();
+}
+
 function chooseCharacter(n,el){
  S.avatar=n;
  document.querySelectorAll(".hdAvatar,.avatar").forEach(x=>x.classList.remove("sel","selected"));
@@ -364,10 +403,10 @@ function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.re
 function goSetup(){startMusic();show("setup");setTimeout(()=>document.getElementById("playerName").focus(),120)}
 function begin(){
  const field=document.getElementById("playerName");
- const typed=(field && field.value ? field.value : "").trim();
+ const typed=(field?.value||"").trim();
 
  if(!typed){
-   if(field) field.focus();
+   field?.focus();
    toast("✏️ DIGITE SEU NOME PARA COMEÇAR!");
    return;
  }
@@ -377,12 +416,12 @@ function begin(){
  }
 
  S.name=typed;
- document.getElementById("hudName").textContent=S.name;
+ const hud=document.getElementById("hudName");
+ if(hud) hud.textContent=S.name;
  const mascot=document.getElementById("mascotImg");
  if(mascot) mascot.src=`assets/avatar${S.avatar}.webp`;
 
  save();
- updateMap();
  show("map");
 }
 function answer(el){let q=Q[S.world][S.q],v=el.dataset.value;if(v===q.a){el.classList.add("good");success()}else{el.classList.add("bad");tone(180,.14,.045);toast("🌟 Quase! Tente outra vez.");setTimeout(()=>el.classList.remove("bad"),600)}}
@@ -441,5 +480,11 @@ const PRELOAD_ASSETS=[
 ];
 window.addEventListener("load",()=>PRELOAD_ASSETS.forEach(src=>{const im=new Image();im.decoding="async";im.src=src;}));
 
+
+
+document.addEventListener("pointerup",(e)=>{
+ const start=e.target.closest?.(".hdStart");
+ if(start){ e.preventDefault(); begin(); }
+});
 
 </script></main></div></body></html>
