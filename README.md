@@ -20,3 +20,9 @@ Jogo infantil de alfabetização, pronto para GitHub Pages.
 Envie todo o conteúdo deste ZIP para a raiz do repositório.
 Depois abra Settings > Pages > Source e escolha GitHub Actions.
 O workflow incluído em `.github/workflows/deploy.yml` publica automaticamente.
+
+
+## Correção visual
+- O jogo abre diretamente no campo de nome e seleção de personagem.
+- Avatares preservam proporção com `object-fit: contain`.
+- A personagem menina negra utiliza a referência visual enviada pelo cliente.

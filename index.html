@@ -22,7 +22,7 @@ button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left
 .setup{position:absolute;z-index:8;left:27%;top:7%;width:48%;height:86%;background:#fffdf1f2;border:.35vw solid #fff;border-radius:2.2vw;box-shadow:0 .8vw 2vw #001b4666;text-align:center;padding:1.4%}
 .wood{display:inline-block;background:linear-gradient(#bd6a30,#773514);border:.25vw solid #eaa45a;border-radius:1vw;color:#fff;font-weight:900;text-shadow:0 .15vw #0008;padding:.35em 1.2em;font-size:clamp(14px,1.75vw,27px)}
 .name{width:78%;margin:1.5% auto 2%;padding:1.5%;border:.28vw solid #52c7ff;border-radius:1vw;text-align:center;font-weight:900;font-size:clamp(14px,1.65vw,25px);display:block}
-.avatars{display:flex;justify-content:center;gap:1.4%;margin:2% 0 3%}.avatar{width:22%;aspect-ratio:1;border:.3vw solid #59c9f7;border-radius:1.3vw;padding:0;background:#e8fbff;overflow:hidden;cursor:pointer;box-shadow:0 .3vw .5vw #0002}.avatar img{width:100%;height:100%;object-fit:cover}.avatar.sel{border-color:#ffca24;box-shadow:0 0 0 .25vw #fff,0 0 1vw #ffca24;transform:scale(1.045)}
+.avatars{display:flex;justify-content:center;gap:1.4%;margin:2% 0 3%}.avatar{width:22%;aspect-ratio:1;border:.3vw solid #59c9f7;border-radius:1.3vw;padding:0;background:#e8fbff;overflow:hidden;cursor:pointer;box-shadow:0 .3vw .5vw #0002}.avatar img{width:100%;height:100%;object-fit:contain;object-position:center;background:#e8fbff}.avatar.sel{border-color:#ffca24;box-shadow:0 0 0 .25vw #fff,0 0 1vw #ffca24;transform:scale(1.045)}
 .btn{border:.3vw solid white;border-radius:1.8vw;background:linear-gradient(#67ef3b,#16a818);color:#fff;padding:.4em 1.35em;font-size:clamp(18px,2.5vw,38px);font-weight:900;text-shadow:0 .18vw #096c12;box-shadow:0 .45vw 0 #087514;cursor:pointer}
 .mapnode{position:absolute;z-index:9;border:0;background:transparent;cursor:pointer}.mapnode.lock{cursor:not-allowed;filter:grayscale(1)}.mapnode.done:after{content:"✓";position:absolute;right:8%;top:8%;width:22%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:#31cb45;border:.25vw solid white;color:white;font-size:2vw;font-weight:900}
 .n1{left:13%;top:36%;width:24%;height:27%}.n2{left:40%;top:34%;width:23%;height:28%}.n3{left:70%;top:49%;width:24%;height:28%}.n4{left:37%;top:65%;width:25%;height:27%}.n5{left:70%;top:15%;width:24%;height:28%}
@@ -33,7 +33,7 @@ button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left
 .visual{height:31%;display:flex;align-items:center;justify-content:center;gap:2%}.emoji{font-size:clamp(55px,8vw,122px);filter:drop-shadow(0 .35vw .2vw #0002)}.wordpic{background:#fff;border:.25vw solid #ffd178;border-radius:1.2vw;padding:.5% 2%;font-size:clamp(20px,2.4vw,36px);font-weight:900}
 .answers,.tiles{height:30%;display:flex;align-items:center;justify-content:center;gap:1.3%;flex-wrap:wrap}.answer,.tile{min-width:18%;border:.28vw solid #cdb1ff;border-radius:1.2vw;background:#fff;padding:.48em .75em;font-size:clamp(17px,2.2vw,34px);font-weight:900;box-shadow:0 .35vw 0 #0002;cursor:pointer}.answer.good{background:#79e78a;border-color:#2ebd43}.answer.bad{background:#ffd7d7;animation:shake .25s 2}@keyframes shake{50%{transform:translateX(.6vw)}}
 .slots{width:68%;height:23%;margin:.5% auto;border:.28vw dashed #67baf0;border-radius:1.2vw;background:#fff;display:flex;align-items:center;justify-content:center;gap:1%;font-size:clamp(19px,2.6vw,40px);font-weight:900}
-.mascot{position:absolute;z-index:9;left:1.5%;bottom:4%;width:16%;aspect-ratio:1;border:.35vw solid white;border-radius:50%;overflow:hidden;background:#e7fbff;box-shadow:0 .5vw 1vw #001a4166}.mascot img{width:100%;height:100%;object-fit:cover}
+.mascot{position:absolute;z-index:9;left:1.5%;bottom:4%;width:16%;aspect-ratio:1;border:.35vw solid white;border-radius:50%;overflow:hidden;background:#e7fbff;box-shadow:0 .5vw 1vw #001a4166}.mascot img{width:100%;height:100%;object-fit:contain;object-position:center;background:#e8fbff}
 .toast{position:absolute;z-index:80;left:50%;top:11%;transform:translateX(-50%) scale(.8);opacity:0;background:#fff;border:.3vw solid #ffd22c;border-radius:1.2vw;padding:.55em 1.2em;font-size:clamp(16px,1.9vw,29px);font-weight:900}.toast.show{animation:toast .9s}@keyframes toast{20%,75%{opacity:1;transform:translateX(-50%) scale(1)}}
 .conf{position:absolute;z-index:90;top:-8%;font-size:2.2vw;animation:fall 1.6s linear forwards}@keyframes fall{to{transform:translateY(115vh) rotate(720deg)}}
 .finalCard{position:absolute;z-index:9;left:31%;top:14%;width:54%;height:72%;background:#fffffff0;border:.4vw solid #ffd22d;border-radius:2vw;box-shadow:0 .8vw 2vw #001b4666;text-align:center;padding:1.5%}.finalCard h1{margin:0;color:#ff8a00;font-size:clamp(24px,3.3vw,50px);text-shadow:0 .15vw #6b3100}.trophy{font-size:clamp(55px,8vw,120px);line-height:1}.cert{margin:1% auto;width:72%;background:#fff8d7;border:.25vw solid #e8b33d;border-radius:1vw;padding:2%;font-weight:900}.tiny{font-size:clamp(11px,1.35vw,20px)}
@@ -43,13 +43,13 @@ button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left
 <body><div id="shell"><main id="gameframe">
 <div id="toast" class="toast">Muito bem!</div>
 
-<section id="start" class="screen on">
+<section id="start" class="screen">
 <img class="art" src="assets/capa.webp" alt="">
 <button class="hotplay" aria-label="Jogar" onclick="goSetup()"></button>
 <div class="top"><span></span><button id="musicTop" class="icon" onclick="toggleMusic()">🎵</button></div>
 </section>
 
-<section id="setup" class="screen">
+<section id="setup" class="screen on">
 <img class="art" src="assets/selecao.webp" alt=""><div class="dim"></div>
 <div class="setup">
 <div class="wood">QUAL É O SEU NOME?</div>
@@ -67,7 +67,7 @@ button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left
 
 <section id="map" class="screen">
 <img class="art" src="assets/mapa.webp" alt="">
-<div class="top"><button class="icon" onclick="show('start')">⌂</button><div class="hud"><span class="chip">⭐ <span id="allStars">0</span>/50</span><button class="icon" onclick="toggleMusic()">🎵</button></div></div>
+<div class="top"><button class="icon" onclick="show('setup')">⌂</button><div class="hud"><span class="chip">⭐ <span id="allStars">0</span>/50</span><button class="icon" onclick="toggleMusic()">🎵</button></div></div>
 <button class="mapnode n1" onclick="openWorld(1)" aria-label="Floresta das Vogais"></button>
 <button class="mapnode n2 lock" onclick="openWorld(2)" aria-label="Vila dos Sons"></button>
 <button class="mapnode n3 lock" onclick="openWorld(3)" aria-label="Montanha das Sílabas"></button>
@@ -152,7 +152,7 @@ let ctx=null,timer=null,step=0;
 const melody=[523,659,784,659,587,698,880,698,523,659,784,1047,880,784,659,587];
 document.querySelectorAll(".avatar").forEach(b=>b.onclick=()=>{document.querySelectorAll(".avatar").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");S.avatar=+b.dataset.av});
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));document.getElementById(id).classList.add("on");if(id==="map")updateMap()}
-function goSetup(){startMusic();show("setup")}
+function goSetup(){startMusic();show("setup");setTimeout(()=>document.getElementById("playerName").focus(),120)}
 function begin(){S.name=document.getElementById("playerName").value.trim()||"Aventureiro";document.getElementById("hudName").textContent=S.name;document.getElementById("mascotImg").src=`assets/avatar${S.avatar}.webp`;save();show("map")}
 function updateMap(){document.getElementById("allStars").textContent=S.stars;document.querySelectorAll(".mapnode").forEach((n,i)=>{let k=i+1;n.classList.toggle("lock",k>S.unlocked);n.classList.toggle("done",S.done.includes(k))})}
 function openWorld(n){if(n>S.unlocked){toast("🔒 Complete o mundo anterior!");return}S.world=n;S.q=0;S.sel=[];document.getElementById("stageArt").src=`assets/${arts[n]}`;document.getElementById("worldTitle").textContent=worlds[n];show("stage");render()}
@@ -176,5 +176,5 @@ function startMusic(){if(!timer){tone(440,.03,.001);timer=setInterval(tick,390)}
 function toggleMusic(){S.music=!S.music;if(S.music)startMusic();save();toast(S.music?"🎵 Música ligada":"🔇 Música desligada")}
 function save(){localStorage.setItem("wm_aventura_alfabeto_final",JSON.stringify(S))}
 function resetGame(){localStorage.removeItem("wm_aventura_alfabeto_final");location.reload()}
-window.addEventListener("load",()=>{try{let x=JSON.parse(localStorage.getItem("wm_aventura_alfabeto_final")||"null");if(x)Object.assign(S,x)}catch(e){};document.getElementById("playerName").value=S.name==="Aventureiro"?"":S.name;document.getElementById("hudName").textContent=S.name;document.getElementById("mascotImg").src=`assets/avatar${S.avatar}.webp`;document.querySelectorAll(".avatar").forEach((b,i)=>b.classList.toggle("sel",i+1===S.avatar));updateMap()});
+window.addEventListener("load",()=>{setTimeout(()=>document.getElementById("playerName").focus(),180);try{let x=JSON.parse(localStorage.getItem("wm_aventura_alfabeto_final")||"null");if(x)Object.assign(S,x)}catch(e){};document.getElementById("playerName").value=S.name==="Aventureiro"?"":S.name;document.getElementById("hudName").textContent=S.name;document.getElementById("mascotImg").src=`assets/avatar${S.avatar}.webp`;document.querySelectorAll(".avatar").forEach((b,i)=>b.classList.toggle("sel",i+1===S.avatar));updateMap()});
 </script></main></div></body></html>
