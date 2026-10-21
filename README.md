@@ -1,28 +1,21 @@
 # Aventura do Alfabeto — WM Jogos Educativos
 
-Jogo infantil de alfabetização, pronto para GitHub Pages.
+Jogo educativo de alfabetização para crianças de aproximadamente 4 a 7 anos.
 
-## Conteúdo
-- 5 mundos
-- 10 atividades por mundo (50 atividades)
-- Floresta das Vogais
-- Vila dos Sons
-- Montanha das Sílabas
-- Castelo das Sílabas
-- Castelo das Palavras
-- 4 personagens ilustrados
-- música instrumental e efeitos
-- progressão, estrelas, desbloqueio e salvamento local
-- layout fixo 3:2 para impedir distorção/corte dos cenários
-- responsivo para computador, tablet e celular
+## Publicação
 
-## GitHub Pages
-Envie todo o conteúdo deste ZIP para a raiz do repositório.
-Depois abra Settings > Pages > Source e escolha GitHub Actions.
-O workflow incluído em `.github/workflows/deploy.yml` publica automaticamente.
+### Netlify
+Arraste a pasta do projeto ou este ZIP descompactado para o Netlify Drop.
+Não há etapa de build. O arquivo inicial é `index.html`.
 
+### GitHub Pages
+Envie todo o conteúdo para a branch `main`.
+O workflow `.github/workflows/deploy-pages.yml` publica automaticamente o site.
 
-## Correção visual
-- O jogo abre diretamente no campo de nome e seleção de personagem.
-- Avatares preservam proporção com `object-fit: contain`.
-- A personagem menina negra utiliza a referência visual enviada pelo cliente.
+## Estrutura
+- `index.html` — jogo completo
+- `assets/` — artes e personagens
+- `netlify.toml` — configuração do Netlify
+- `.github/workflows/deploy-pages.yml` — publicação no GitHub Pages
+- `.nojekyll` — compatibilidade com GitHub Pages
+- `CORRECOES_SOLICITADAS.md` — checklist da revisão
