@@ -58,16 +58,16 @@ background:transparent;cursor:pointer;pointer-events:auto
 }
 .hdAvatar.sel{border-color:#ffd126;box-shadow:0 0 0 .2vw #fff,0 0 .8vw #ffd126}
 .hdStart{
-position:absolute;z-index:60;
-left:29.5%;top:70.5%;width:49.5%;height:19%;
-border:0;background:transparent;cursor:pointer;border-radius:4vw;
-pointer-events:auto
+ position:absolute;z-index:100;
+ left:27%;top:69%;width:54%;height:21%;
+ border:0;background:transparent;cursor:pointer;border-radius:4vw;
+ pointer-events:auto
 }
 .hdMusic{
-position:absolute;z-index:61;
-left:3.3%;top:79.5%;width:12%;height:17.5%;
-border:0;background:transparent;cursor:pointer;border-radius:2vw;
-pointer-events:auto
+ position:absolute;z-index:101;
+ left:2%;top:78%;width:14%;height:20%;
+ border:0;background:transparent;cursor:pointer;border-radius:2vw;
+ pointer-events:auto
 }
 
 
@@ -257,13 +257,13 @@ button:focus-visible,input:focus-visible{outline:4px solid #ffe45c;outline-offse
 <input id="playerName" class="hdName" maxlength="15" placeholder="Digite seu nome" autocomplete="off">
 <!-- Áreas clicáveis exatamente sobre os quatro personagens desenhados na própria arte HD. -->
 <div class="hdAvatars">
-  <button class="hdAvatar" data-av="1" aria-label="Menino"></button>
-  <button class="hdAvatar" data-av="2" aria-label="Menina"></button>
-  <button class="hdAvatar" data-av="3" aria-label="Menino negro"></button>
-  <button class="hdAvatar" data-av="4" aria-label="Menina negra"></button>
+  <button class="hdAvatar" type="button" data-av="1" aria-label="Menino" onclick="chooseCharacter(1,this)"></button>
+  <button class="hdAvatar" type="button" data-av="2" aria-label="Menina" onclick="chooseCharacter(2,this)"></button>
+  <button class="hdAvatar" type="button" data-av="3" aria-label="Menino negro" onclick="chooseCharacter(3,this)"></button>
+  <button class="hdAvatar" type="button" data-av="4" aria-label="Menina negra" onclick="chooseCharacter(4,this)"></button>
 </div>
-<button class="hdStart" type="button" aria-label="Começar"></button>
-<button class="hdMusic" type="button" aria-label="Música"></button>
+<button class="hdStart" type="button" aria-label="Começar" onclick="begin()"></button>
+<button class="hdMusic" type="button" aria-label="Música" onclick="toggleMusic()"></button>
 </section>
 
 <section id="map" class="screen">
@@ -353,28 +353,34 @@ const Q={
 let S={name:"Aventureiro",avatar:null,unlocked:1,done:[],stars:0,world:1,q:0,music:false,sel:[]};
 let ctx=null,timer=null,step=0;
 const melody=[523,659,784,659,587,698,880,698,523,659,784,1047,880,784,659,587];
-document.querySelectorAll(".avatar,.hdAvatar").forEach(b=>b.addEventListener("click",(ev)=>{
- ev.preventDefault(); ev.stopPropagation();
- document.querySelectorAll(".avatar,.hdAvatar").forEach(x=>x.classList.remove("sel","selected"));
- b.classList.add("sel","selected");
- S.avatar=+(b.dataset.av||b.dataset.avatar);
- tone(660,.08,.025);
-}));
+
+function chooseCharacter(n,el){
+ S.avatar=n;
+ document.querySelectorAll(".hdAvatar,.avatar").forEach(x=>x.classList.remove("sel","selected"));
+ if(el) el.classList.add("sel","selected");
+ try{ tone(660,.08,.025); }catch(e){}
+}
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));document.getElementById(id).classList.add("on");if(id==="map")updateMap()}
 function goSetup(){startMusic();show("setup");setTimeout(()=>document.getElementById("playerName").focus(),120)}
 function begin(){
  const field=document.getElementById("playerName");
- const typed=(field?.value||"").trim();
+ const typed=(field && field.value ? field.value : "").trim();
+
  if(!typed){
-   field?.focus();
-   toast("✏️ Digite o nome da criança para começar!");
+   if(field) field.focus();
+   toast("✏️ DIGITE SEU NOME PARA COMEÇAR!");
    return;
  }
  if(!S.avatar){
-   toast("👧🏽👦🏽 Escolha um personagem para começar!");
+   toast("👦🏽 ESCOLHA UM PERSONAGEM!");
    return;
  }
+
  S.name=typed;
+ document.getElementById("hudName").textContent=S.name;
+ const mascot=document.getElementById("mascotImg");
+ if(mascot) mascot.src=`assets/avatar${S.avatar}.webp`;
+
  save();
  updateMap();
  show("map");
@@ -435,18 +441,5 @@ const PRELOAD_ASSETS=[
 ];
 window.addEventListener("load",()=>PRELOAD_ASSETS.forEach(src=>{const im=new Image();im.decoding="async";im.src=src;}));
 
-
-window.addEventListener("DOMContentLoaded",()=>{
- const startBtn=document.querySelector(".hdStart");
- const musicBtn=document.querySelector(".hdMusic");
- if(startBtn){
-   startBtn.addEventListener("click",(e)=>{e.preventDefault();e.stopPropagation();begin();});
-   startBtn.addEventListener("touchend",(e)=>{e.preventDefault();begin();},{passive:false});
- }
- if(musicBtn){
-   musicBtn.addEventListener("click",(e)=>{e.preventDefault();e.stopPropagation();toggleMusic();});
-   musicBtn.addEventListener("touchend",(e)=>{e.preventDefault();toggleMusic();},{passive:false});
- }
-});
 
 </script></main></div></body></html>
