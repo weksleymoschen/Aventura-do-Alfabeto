@@ -12,7 +12,7 @@ body{display:grid;place-items:center}
 #shell{width:100vw;height:100vh;display:grid;place-items:center;background:linear-gradient(180deg,#168fc9,#073f70)}
 #gameframe{position:relative;width:min(100vw,150vh);height:min(100vh,66.6667vw);aspect-ratio:3/2;background:#70d4f4;overflow:hidden;box-shadow:0 0 45px #001a36}
 .screen{display:none;position:absolute;inset:0}.screen.on{display:block}
-.art{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#168fc9;user-select:none;-webkit-user-drag:none}
+.art{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#168fc9;user-select:none;-webkit-user-drag:none;filter:none;image-rendering:auto}
 .dim{position:absolute;inset:0;background:linear-gradient(#0016340a,#0016341b);pointer-events:none}
 button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left:1.2%;right:1.2%;display:flex;align-items:center;justify-content:space-between;gap:1%}
 .hud{display:flex;gap:.6vw;align-items:center}.chip{background:#fffffff0;border:3px solid white;border-radius:1.2vw;padding:.45em .8em;font-size:clamp(11px,1.45vw,22px);font-weight:900;box-shadow:0 .25vw .5vw #0003}
@@ -27,9 +27,9 @@ button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left
 .mapnode{position:absolute;z-index:9;border:0;background:transparent;cursor:pointer}.mapnode.lock{cursor:not-allowed;filter:grayscale(1)}.mapnode.done:after{content:"✓";position:absolute;right:8%;top:8%;width:22%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:#31cb45;border:.25vw solid white;color:white;font-size:2vw;font-weight:900}
 .n1{left:13%;top:36%;width:24%;height:27%}.n2{left:40%;top:34%;width:23%;height:28%}.n3{left:70%;top:49%;width:24%;height:28%}.n4{left:37%;top:65%;width:25%;height:27%}.n5{left:70%;top:15%;width:24%;height:28%}
 .stageTitle{position:absolute;z-index:11;left:25%;right:25%;top:2%;text-align:center}.stageTitle .wood{font-size:clamp(14px,1.8vw,28px)}
-.panel{position:absolute;z-index:8;left:18%;right:5%;top:16%;bottom:5%;background:#fff9e8f3;border:.35vw solid white;border-radius:2vw;box-shadow:0 .8vw 2vw #001b4666;text-align:center;padding:1.2%;overflow:hidden}
+.panel{position:absolute;z-index:8;left:18%;right:5%;top:16%;bottom:5%;background:transparent;border:.35vw solid white;border-radius:2vw;box-shadow:0 .8vw 2vw #001b4666;text-align:center;padding:1.2%;overflow:hidden}
 .progress{width:82%;height:1.1vw;min-height:8px;margin:.5% auto;background:#d9d9d9;border:.15vw solid white;border-radius:1vw;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#ffce25,#45d443);transition:.35s}
-.prompt{width:92%;margin:.6% auto;background:#fff;border:.25vw solid #55c3ff;border-radius:1.2vw;padding:.55em;font-size:clamp(16px,2vw,31px);font-weight:900}
+.prompt{width:76%;margin:.6% auto;background:#fffffff2;border:.25vw solid #55c3ff;border-radius:1.2vw;padding:.55em;font-size:clamp(16px,2vw,31px);font-weight:900}
 .visual{height:31%;display:flex;align-items:center;justify-content:center;gap:2%}.emoji{font-size:clamp(55px,8vw,122px);filter:drop-shadow(0 .35vw .2vw #0002)}.wordpic{background:#fff;border:.25vw solid #ffd178;border-radius:1.2vw;padding:.5% 2%;font-size:clamp(20px,2.4vw,36px);font-weight:900}
 .answers,.tiles{height:30%;display:flex;align-items:center;justify-content:center;gap:1.3%;flex-wrap:wrap}.answer,.tile{min-width:18%;border:.28vw solid #cdb1ff;border-radius:1.2vw;background:#fff;padding:.48em .75em;font-size:clamp(17px,2.2vw,34px);font-weight:900;box-shadow:0 .35vw 0 #0002;cursor:pointer}.answer.good{background:#79e78a;border-color:#2ebd43}.answer.bad{background:#ffd7d7;animation:shake .25s 2}@keyframes shake{50%{transform:translateX(.6vw)}}
 .slots{width:68%;height:23%;margin:.5% auto;border:.28vw dashed #67baf0;border-radius:1.2vw;background:#fff;display:flex;align-items:center;justify-content:center;gap:1%;font-size:clamp(19px,2.6vw,40px);font-weight:900}
@@ -52,6 +52,12 @@ button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left
 .hdAvatar.sel{border-color:#ffd126;box-shadow:0 0 0 .2vw #fff,0 0 .8vw #ffd126}
 .hdStart{position:absolute;z-index:20;left:28.1%;top:75.0%;width:30.8%;height:12.8%;border:0;background:transparent;cursor:pointer}
 .hdMusic{position:absolute;z-index:20;left:3.0%;top:85.0%;width:7.5%;height:11.5%;border:0;background:transparent;cursor:pointer}
+
+
+#stage .top{background:linear-gradient(180deg,rgba(9,61,102,.92),rgba(9,61,102,.62));left:0;right:0;top:0;padding:.7% 1.2%;border-bottom:2px solid rgba(255,255,255,.65)}
+#stage .stageTitle{top:1.3%}
+#stage .panel{border:0;box-shadow:none}
+#stage .visual{background:rgba(255,255,255,.08);border-radius:1.2vw}
 
 </style>
 </head>
@@ -91,7 +97,7 @@ button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left
 
 <section id="stage" class="screen">
 <img id="stageArt" class="art" src="assets/floresta.webp" alt=""><div class="dim"></div>
-<div class="top"><button class="icon" onclick="show('map')">🗺️</button><div class="hud"><span class="chip namechip"><span id="hudName">Aventureiro</span></span><span class="chip">⭐ <span id="stars">0</span> • <span id="counter">1/10</span></span><button class="icon" onclick="toggleMusic()">🎵</button></div></div>
+<div class="top"><button class="icon" onclick="show('map')" aria-label="Voltar ao mapa">← VOLTAR</button><div class="hud"><span class="chip namechip"><span id="hudName">Aventureiro</span></span><span class="chip">⭐ <span id="stars">0</span> • <span id="counter">1/10</span></span><button class="icon" onclick="toggleMusic()">🎵</button></div></div>
 <div class="stageTitle"><div id="worldTitle" class="wood"></div></div>
 <div class="mascot"><img id="mascotImg" src="assets/avatar1.webp" alt=""></div>
 <div class="panel"><div class="progress"><i id="bar"></i></div><div id="content"></div></div>
@@ -104,7 +110,7 @@ button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left
 </main></div>
 <script>
 const worlds=["","FLORESTA DAS VOGAIS","VILA DOS SONS","MONTANHA DAS SÍLABAS","CASTELO DAS SÍLABAS","CASTELO DAS PALAVRAS"];
-const arts=["","floresta.webp","vila.webp","montanha.webp","castelo_silabas.webp","castelo_palavras.webp"];
+const arts=["","floresta_hd.jpg","vila_hd.jpg","montanha.webp","castelo_silabas.webp","castelo_palavras.webp"];
 const Q={
 1:[
 {p:"Encontre a letra A!",pic:"🌳 🦋",o:["E","A","O"],a:"A"},
@@ -167,7 +173,11 @@ const melody=[523,659,784,659,587,698,880,698,523,659,784,1047,880,784,659,587];
 document.querySelectorAll(".avatar,.hdAvatar").forEach(b=>b.onclick=()=>{document.querySelectorAll(".avatar,.hdAvatar").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");S.avatar=+b.dataset.av});
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));document.getElementById(id).classList.add("on");if(id==="map")updateMap()}
 function goSetup(){startMusic();show("setup");setTimeout(()=>document.getElementById("playerName").focus(),120)}
-function begin(){S.name=document.getElementById("playerName").value.trim()||"Aventureiro";document.getElementById("hudName").textContent=S.name;document.getElementById("mascotImg").src=`assets/avatar${S.avatar}.webp`;save();show("map")}
+function begin(){
+let field=document.getElementById("playerName");
+let typed=field.value.trim();
+if(!typed){field.focus();toast("✏️ Digite o nome da criança para começar!");return;}
+S.name=typed;document.getElementById("hudName").textContent=S.name;document.getElementById("mascotImg").src=`assets/avatar${S.avatar}.webp`;save();show("map")}
 function updateMap(){document.getElementById("allStars").textContent=S.stars;document.querySelectorAll(".mapnode").forEach((n,i)=>{let k=i+1;n.classList.toggle("lock",k>S.unlocked);n.classList.toggle("done",S.done.includes(k))})}
 function openWorld(n){if(n>S.unlocked){toast("🔒 Complete o mundo anterior!");return}S.world=n;S.q=0;S.sel=[];document.getElementById("stageArt").src=`assets/${arts[n]}`;document.getElementById("worldTitle").textContent=worlds[n];show("stage");render()}
 function render(){let q=Q[S.world][S.q];document.getElementById("stars").textContent=S.stars;document.getElementById("counter").textContent=`${S.q+1}/10`;document.getElementById("bar").style.width=`${S.q*10}%`;let h=`<div class="prompt">${q.p}</div><div class="visual"><div class="emoji">${q.pic||""}</div>${q.label?`<div class="wordpic">${q.label}</div>`:""}</div>`;
