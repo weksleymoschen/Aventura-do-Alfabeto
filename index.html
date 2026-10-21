@@ -155,6 +155,69 @@ button:focus-visible,input:focus-visible{outline:4px solid #ffe45c;outline-offse
   border-radius:18px;font-weight:900;padding:10px 16px;min-width:110px;
 }
 
+
+/* ===== MAPA FINAL: UMA ÚNICA CAMADA VISUAL ===== */
+#map>.art{
+ width:100%;height:100%;object-fit:contain!important;object-position:center!important;
+ filter:none!important;transform:none!important;background:#1599d0;
+}
+#map .top,#map .hud,#map .chip,#map .icon{display:none!important}
+#map .mapScore{display:none!important}
+#map .mapHot{
+ position:absolute;z-index:30;border:0;background:transparent!important;
+ box-shadow:none!important;padding:0;cursor:pointer;border-radius:18px;
+}
+#map .mapHot:hover{background:rgba(255,255,255,.10)!important}
+#map .mapHot:active{background:rgba(255,220,60,.16)!important}
+#map .mapBack{left:0.5%;top:0.7%;width:8.5%;height:13%}
+#map .mh1{left:12.5%;top:27%;width:26%;height:28%}
+#map .mh2{left:42%;top:30%;width:22%;height:28%}
+#map .mh3{left:73%;top:25%;width:24%;height:29%}
+#map .mh4{left:25%;top:61%;width:27%;height:31%}
+#map .mh5{left:67%;top:62%;width:27%;height:31%}
+#map .lockedHot{cursor:not-allowed}
+
+
+/* ===== FLORESTA FINAL: LETRAS INCORPORADAS ÀS TORAS ===== */
+#stage:has(.forestTargets) .top{
+ position:absolute;z-index:50;top:1%;left:1%;right:1%;background:transparent!important;border:0!important;
+}
+#stage:has(.forestTargets) .top .hud{display:flex}
+#stage:has(.forestTargets) .stageTitle,
+#stage:has(.forestTargets) .progress,
+#stage:has(.forestTargets) .mascot{display:none!important}
+#stage:has(.forestTargets) .panel{
+ position:absolute!important;inset:0!important;background:transparent!important;border:0!important;
+ box-shadow:none!important;padding:0!important;overflow:visible!important;pointer-events:none!important;
+}
+#stage:has(.forestTargets) .forestPrompt{
+ position:absolute;z-index:25;left:31%;top:11%;width:43%;height:9%;
+ display:flex;align-items:center;justify-content:center;
+ background:rgba(255,255,255,.96);border:4px solid #52c6ff;border-radius:22px;
+ box-shadow:0 5px 12px rgba(0,0,0,.15);font-size:clamp(18px,2vw,31px);font-weight:900;
+ pointer-events:auto;
+}
+#stage:has(.forestTargets) .forestTargets{position:absolute;inset:0;z-index:24;pointer-events:none}
+#stage:has(.forestTargets) .letterOnLog{
+ position:absolute;transform:translate(-50%,-50%);
+ width:11%;height:15%;padding:0;border:0!important;border-radius:0!important;
+ background:transparent!important;box-shadow:none!important;
+ color:#123e80;font-size:clamp(38px,5vw,78px);font-weight:1000;line-height:1;
+ text-shadow:0 2px 0 #fff,0 3px 4px rgba(0,0,0,.12);
+ cursor:pointer;pointer-events:auto;
+}
+#stage:has(.forestTargets) .letterOnLog:hover{transform:translate(-50%,-50%) scale(1.08)}
+#stage:has(.forestTargets) .letterOnLog.good{color:#16a83c}
+#stage:has(.forestTargets) .letterOnLog.bad{color:#e83b32}
+
+
+#stage .top .icon:first-child{
+ min-width:118px;background:linear-gradient(#ffd846,#ff9f1c)!important;color:white!important;
+ border:3px solid white!important;border-radius:18px!important;font-weight:900!important;
+ box-shadow:0 4px 0 #c46b0b!important;
+}
+#stage .chip{font-weight:900}
+
 </style>
 </head>
 <body><div id="shell"><main id="gameframe">
@@ -182,7 +245,7 @@ button:focus-visible,input:focus-visible{outline:4px solid #ffe45c;outline-offse
 </section>
 
 <section id="map" class="screen">
-<img class="art" src="assets/mapa_profissional.png" alt="">
+<img class="art" src="assets/mapa_final_hd.png" alt="">
 
 <button class="mapHot mapBack" onclick="show('setup')" aria-label="Voltar"></button>
 <div class="mapScore">⭐ <span id="mapScoreValue">0</span>/50</div>
@@ -339,7 +402,7 @@ function resetGame(){localStorage.removeItem("wm_aventura_alfabeto_final");locat
 window.addEventListener("load",()=>{setTimeout(()=>{let n=document.getElementById("playerName");if(n){n.value="";n.focus()}},120);setTimeout(()=>document.getElementById("playerName").focus(),180);try{let x=JSON.parse(localStorage.getItem("wm_aventura_alfabeto_final")||"null");if(x)Object.assign(S,x)}catch(e){};document.getElementById("playerName").value="";document.getElementById("hudName").textContent=S.name;document.getElementById("mascotImg").src=`assets/avatar${S.avatar}.webp`;document.querySelectorAll(".avatar").forEach((b,i)=>b.classList.toggle("sel",i+1===S.avatar));updateMap()});
 
 const PRELOAD_ASSETS=[
- "assets/tela_inicial_hd.jpg","assets/mapa_profissional.png","assets/floresta_profissional.png",
+ "assets/tela_inicial_hd.jpg","assets/mapa_final_hd.png","assets/floresta_profissional.png",
  "assets/vila.webp","assets/montanha.webp","assets/castelo_silabas.webp","assets/castelo_palavras.webp","assets/final.webp"
 ];
 window.addEventListener("load",()=>PRELOAD_ASSETS.forEach(src=>{const im=new Image();im.decoding="async";im.src=src;}));
