@@ -1,0 +1,15 @@
+AVENTURA DO ALFABETO - WM JOGOS EDUCATIVOS
+
+Versão completa:
+- 5 mundos
+- 10 atividades em cada mundo (50 atividades)
+- identidade visual baseada na arte aprovada
+- personagens, cenários, desenhos e imagens infantis
+- música de fundo instrumental gerada no navegador (sem arquivo externo)
+- efeitos de acerto, confetes e recompensas
+- desbloqueio progressivo
+- salvamento local do progresso
+- responsivo para celular, tablet e computador
+- pronto para Netlify e GitHub Pages
+
+Para publicar no Netlify: envie o ZIP ou a pasta do projeto.

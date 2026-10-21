@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Aventura do Alfabeto - WM Jogos Educativos</title>
+<style>
+:root{--navy:#172b55;--yellow:#ffd532;--green:#47cf3e;--blue:#33b7ff;--purple:#8d55dc;--orange:#ff8b2b}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:"Trebuchet MS",Arial,sans-serif;background:#75d7ff;color:var(--navy);overflow:hidden}
+button,input{font-family:inherit}.screen{display:none;position:relative;width:100vw;height:100dvh;min-height:100vh;overflow:hidden}.screen.on{display:flex}
+.bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:saturate(1.1)}
+.shade{position:absolute;inset:0;background:linear-gradient(#ffffff0d,#10265a22)}
+.center{position:relative;z-index:2;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:16px}
+.panel{width:min(94vw,900px);max-height:92vh;overflow:auto;background:#fffffff0;border:4px solid #fff;border-radius:28px;padding:18px;box-shadow:0 15px 40px #10265a55;text-align:center}
+.title{margin:0 0 8px;font-size:clamp(30px,5vw,58px);color:#fff;text-shadow:0 4px 0 #122a65,3px 0 #122a65,-3px 0 #122a65,0 -3px #122a65}
+.logoTitle{font-size:clamp(40px,7vw,80px);line-height:.9;color:#ffd52b;text-shadow:0 5px 0 #162d6d,4px 0 #162d6d,-4px 0 #162d6d}.logoTitle b{color:#2dd1ff}.logoTitle em{font-style:normal;color:#ff3fa5}
+.btn{border:3px solid #fff;border-radius:22px;padding:12px 22px;margin:6px;font-weight:900;font-size:clamp(17px,2.5vw,25px);cursor:pointer;box-shadow:0 6px 0 #0003;transition:.12s;touch-action:manipulation}.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #0003}.play{background:#50d52d;color:white;font-size:clamp(24px,4vw,38px)}.blue{background:#42bfff;color:#08255c}.yellow{background:#ffd83f}.purple{background:#ad7df2}.white{background:white}
+#start .panel{background:#ffffffc8;backdrop-filter:blur(2px)}.sub{font-size:clamp(16px,2.4vw,24px);font-weight:800}
+.setup{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}.avatar{font-size:72px;background:#eaf9ff;border:5px solid #72cfff;border-radius:25px;padding:8px 18px;cursor:pointer}.avatar.sel{border-color:#ffcf2d;transform:scale(1.04)}
+input{width:min(90%,420px);padding:13px;border:4px solid #62bfff;border-radius:18px;font-size:23px;text-align:center;font-weight:bold}
+.hud{position:absolute;z-index:8;top:8px;left:8px;right:8px;display:flex;justify-content:space-between;align-items:center;pointer-events:none}.hud>*{pointer-events:auto}.chip{background:#ffffffee;border:3px solid #fff;border-radius:18px;padding:7px 12px;font-weight:900;box-shadow:0 4px 12px #0003}.round{width:48px;height:48px;padding:0;border-radius:15px;font-size:23px}
+.mapgrid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;width:min(96vw,1200px);margin:auto;padding-top:70px}.world{min-height:190px;border:5px solid #fff;border-radius:28px;color:#fff;font-size:19px;font-weight:900;text-shadow:0 2px 3px #0009;box-shadow:0 10px 25px #0005;display:flex;flex-direction:column;align-items:center;justify-content:end;padding:15px;cursor:pointer;background-size:cover;background-position:center}.world i{font-style:normal;font-size:50px}.world.lock{filter:grayscale(.8);opacity:.72}.world.done:after{content:"✓ CONCLUÍDO";background:#3cc44a;padding:5px 9px;border-radius:12px;margin-top:5px}
+.stageWrap{position:relative;z-index:2;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:68px 12px 14px}
+.activity{width:min(94vw,920px);max-height:87vh;overflow:auto;background:#fffef0ee;border:5px solid #fff;border-radius:30px;padding:16px;box-shadow:0 14px 35px #0d1c4e66;text-align:center}
+.banner{display:inline-block;background:#8b4d21;color:white;border:4px solid #e9a95e;border-radius:16px;padding:8px 22px;font-weight:900;font-size:clamp(20px,3vw,32px);text-shadow:0 2px #0007}
+.prompt{margin:12px auto 8px;background:white;border:4px solid #78c9ff;border-radius:20px;padding:10px;font-weight:900;font-size:clamp(20px,3vw,31px);max-width:760px}
+.pic{font-size:clamp(76px,13vw,130px);line-height:1.05;filter:drop-shadow(0 6px 3px #0002)}
+.choices{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}.choice{min-width:105px;min-height:70px;background:#fff;border:5px solid #d5b9ff;border-radius:20px;padding:12px 18px;font-size:clamp(22px,4vw,36px);font-weight:900;cursor:pointer;box-shadow:0 6px 0 #0002}.choice.correct{background:#7ce986;border-color:#32bd43}.choice.wrong{animation:shake .28s 2;background:#ffd9d9}
+@keyframes shake{50%{transform:translateX(9px)}}.progress{width:min(75vw,580px);height:18px;background:#d8d8d8;border:3px solid white;border-radius:20px;margin:8px auto;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,#ffcf2d,#58d64b);transition:.35s}
+.tiles{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.tile{font-size:30px;font-weight:900;background:#fff2a6;border:4px solid #efb82f;border-radius:17px;padding:13px 18px;cursor:pointer}.slots{min-height:70px;max-width:600px;margin:10px auto;border:4px dashed #8f69d9;background:#fff;border-radius:18px;padding:10px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:31px;font-weight:900}
+.sceneObjects{position:absolute;inset:0;pointer-events:none;z-index:1}.float{position:absolute;font-size:clamp(36px,6vw,70px);animation:bob 2.8s ease-in-out infinite;filter:drop-shadow(0 5px 4px #0003)}@keyframes bob{50%{transform:translateY(-10px)}}.mascot{position:absolute;bottom:5px;left:2vw;font-size:clamp(70px,13vw,150px);z-index:3;filter:drop-shadow(0 8px 6px #0004)}
+.starsRow{font-size:30px}.toast{position:fixed;z-index:30;left:50%;top:17%;transform:translateX(-50%) scale(.8);background:#fff;border:5px solid #ffd438;border-radius:22px;padding:12px 22px;font-size:26px;font-weight:900;opacity:0;pointer-events:none}.toast.show{animation:toast .9s}@keyframes toast{20%,75%{opacity:1;transform:translateX(-50%) scale(1)}}
+.conf{position:fixed;z-index:50;top:-30px;font-size:25px;animation:fall 1.8s linear forwards}@keyframes fall{to{transform:translateY(115vh) rotate(700deg)}}
+.brand{position:absolute;z-index:9;right:8px;bottom:6px;background:#15306de6;color:#fff;border:2px solid #fff;border-radius:12px;padding:5px 9px;font-size:12px;font-weight:bold}
+.finalCard{background:#ffffffe8;border:6px solid #ffd337;border-radius:30px;padding:18px;text-align:center;width:min(90vw,700px);box-shadow:0 15px 35px #0005}.trophy{font-size:100px}
+@media(max-width:760px){.mapgrid{grid-template-columns:repeat(2,1fr);overflow:auto;max-height:100vh;padding-bottom:20px}.world{min-height:140px}.world:last-child{grid-column:1/3}.mascot{opacity:.9}.activity{padding:10px}.choice{min-width:85px}.hud .chip.namechip{display:none}}
+</style>
+</head>
+<body>
+<div id="toast" class="toast">Muito bem! ⭐</div>
+
+<section id="start" class="screen on">
+ <div class="bg" style="background-image:url('assets/capa.jpg')"></div><div class="shade"></div>
+ <div class="center"><div class="panel">
+  <div class="logoTitle">AVENTURA<br><em>DO</em> <b>ALFABETO</b></div>
+  <div class="sub">Explore mundos, supere desafios e descubra as letras, sílabas e palavras!</div>
+  <button class="btn play" onclick="goSetup()">▶ JOGAR</button><br>
+  <button id="musicStart" class="btn blue" onclick="toggleMusic()">🎵 MÚSICA: LIGADA</button>
+ </div></div><div class="brand">WM 🎮 JOGOS EDUCATIVOS</div>
+</section>
+
+<section id="setup" class="screen">
+ <div class="bg" style="background-image:url('assets/personagens.jpg')"></div><div class="shade"></div>
+ <div class="center"><div class="panel">
+  <h2>QUAL É O SEU NOME?</h2><input id="playerName" maxlength="16" placeholder="Digite seu nome">
+  <h2>ESCOLHA SEU PERSONAGEM</h2>
+  <div class="setup"><button class="avatar sel" data-av="🧒">🧒</button><button class="avatar" data-av="👧">👧</button><button class="avatar" data-av="🧑🏽">🧑🏽</button><button class="avatar" data-av="👧🏾">👧🏾</button></div>
+  <button class="btn play" onclick="begin()">COMEÇAR ▶</button>
+ </div></div><div class="brand">WM 🎮 JOGOS EDUCATIVOS</div>
+</section>
+
+<section id="map" class="screen">
+ <div class="bg" style="background-image:url('assets/mapa.jpg')"></div><div class="shade"></div>
+ <div class="hud"><button class="btn round yellow" onclick="show('start')">⌂</button><div class="chip">⭐ <span id="totalStars">0</span>/50</div></div>
+ <div class="mapgrid">
+  <div id="world1" class="world" style="background-image:linear-gradient(#0002,#0005),url('assets/floresta.jpg')" onclick="openWorld(1)"><i>🌳</i>1. FLORESTA DAS VOGAIS</div>
+  <div id="world2" class="world lock" style="background-image:linear-gradient(#0002,#0005),url('assets/vila.jpg')" onclick="openWorld(2)"><i>🏘️</i>2. VILA DOS SONS</div>
+  <div id="world3" class="world lock" style="background-image:linear-gradient(#0002,#0005),url('assets/montanha.jpg')" onclick="openWorld(3)"><i>⛰️</i>3. MONTANHA DAS SÍLABAS</div>
+  <div id="world4" class="world lock" style="background-image:linear-gradient(#0002,#0005),url('assets/castelo_silabas.jpg')" onclick="openWorld(4)"><i>🏰</i>4. CASTELO DAS SÍLABAS</div>
+  <div id="world5" class="world lock" style="background-image:linear-gradient(#0002,#0005),url('assets/castelo_palavras.jpg')" onclick="openWorld(5)"><i>👑</i>5. CASTELO DAS PALAVRAS</div>
+ </div><div class="brand">WM 🎮 JOGOS EDUCATIVOS</div>
+</section>
+
+<section id="stage" class="screen">
+ <div id="stageBg" class="bg"></div><div class="shade"></div>
+ <div class="sceneObjects"><span class="float" style="left:7%;top:15%">🦋</span><span class="float" style="right:8%;top:20%;animation-delay:.8s">✨</span><span class="float" style="right:12%;bottom:12%;animation-delay:1.4s">🌟</span></div>
+ <div class="hud"><button class="btn round yellow" onclick="show('map')">🗺️</button><div class="chip namechip"><span id="avatarHud">🧒</span> <span id="nameHud">Aventureiro</span></div><div class="chip">⭐ <span id="stageStars">0</span> | Atividade <span id="qnum">1</span>/10</div><button class="btn round blue" onclick="toggleMusic()">🎵</button></div>
+ <div class="stageWrap"><div class="activity"><div id="banner" class="banner"></div><div class="progress"><span id="prog"></span></div><div id="game"></div></div></div>
+ <div id="mascot" class="mascot">🧒</div><div class="brand">WM 🎮 JOGOS EDUCATIVOS</div>
+</section>
+
+<section id="final" class="screen">
+ <div class="bg" style="background-image:url('assets/final.jpg')"></div><div class="shade"></div>
+ <div class="center"><div class="finalCard"><div class="trophy">🏆</div><h1 id="congrats">PARABÉNS!</h1><h2>GUARDIÃO DAS PALAVRAS</h2><div class="starsRow">⭐⭐⭐⭐⭐</div><p id="stats"></p><button class="btn play" onclick="resetAll()">JOGAR NOVAMENTE</button><button class="btn blue" onclick="show('map')">🗺️ MAPA</button></div></div><div class="brand">WM 🎮 JOGOS EDUCATIVOS</div>
+</section>
+
+<script>
+let S={name:"Aventureiro",avatar:"🧒",unlocked:1,done:[],stars:0,world:1,q:0,music:true,selected:[]};
+let audioCtx=null, musicTimer=null, musicStep=0;
+const titles=["","🌳 FLORESTA DAS VOGAIS","🏘️ VILA DOS SONS","⛰️ MONTANHA DAS SÍLABAS","🏰 CASTELO DAS SÍLABAS","👑 CASTELO DAS PALAVRAS"];
+const bgs=["","floresta.jpg","vila.jpg","montanha.jpg","castelo_silabas.jpg","castelo_palavras.jpg"];
+const Q={
+1:[
+{p:"Encontre a letra A!",o:["E","A","O"],a:"A",pic:"🌳🦋"},
+{p:"Qual vogal inicia ABELHA?",o:["A","E","I"],a:"A",pic:"🐝"},
+{p:"Encontre a letra E!",o:["U","O","E"],a:"E",pic:"🐘"},
+{p:"Qual vogal inicia ELEFANTE?",o:["A","E","O"],a:"E",pic:"🐘"},
+{p:"Encontre a letra I!",o:["I","A","U"],a:"I",pic:"🏝️"},
+{p:"Qual vogal inicia IGREJA?",o:["O","I","E"],a:"I",pic:"⛪"},
+{p:"Encontre a letra O!",o:["U","A","O"],a:"O",pic:"👓"},
+{p:"Qual vogal inicia OVELHA?",o:["E","O","A"],a:"O",pic:"🐑"},
+{p:"Encontre a letra U!",o:["I","U","E"],a:"U",pic:"🍇"},
+{p:"Qual vogal inicia UVA?",o:["A","O","U"],a:"U",pic:"🍇"}],
+2:[
+{p:"Qual palavra começa com B?",o:["⚽ BOLA","🐱 GATO","🦆 PATO"],a:"⚽ BOLA",pic:"🏘️"},
+{p:"Qual palavra começa com G?",o:["🐸 SAPO","🐱 GATO","🏠 CASA"],a:"🐱 GATO",pic:"🐱"},
+{p:"Qual palavra começa com P?",o:["🦆 PATO","⚽ BOLA","🌙 LUA"],a:"🦆 PATO",pic:"🦆"},
+{p:"Qual palavra começa com C?",o:["🎲 DADO","🏠 CASA","🧳 MALA"],a:"🏠 CASA",pic:"🏠"},
+{p:"Qual palavra começa com M?",o:["🧳 MALA","🐸 SAPO","👄 BOCA"],a:"🧳 MALA",pic:"🧳"},
+{p:"Qual palavra começa com S?",o:["🐸 SAPO","🎲 DADO","⚽ BOLA"],a:"🐸 SAPO",pic:"🐸"},
+{p:"Qual palavra começa com D?",o:["🌙 LUA","🎲 DADO","🐱 GATO"],a:"🎲 DADO",pic:"🎲"},
+{p:"Qual palavra começa com L?",o:["🏠 CASA","🌙 LUA","🦆 PATO"],a:"🌙 LUA",pic:"🌙"},
+{p:"Qual palavra começa com F?",o:["🌸 FLOR","🐱 GATO","🧳 MALA"],a:"🌸 FLOR",pic:"🌸"},
+{p:"Qual palavra começa com R?",o:["🐭 RATO","🐸 SAPO","⚽ BOLA"],a:"🐭 RATO",pic:"🐭"}],
+3:[
+{p:"Primeira sílaba de BOLA",o:["BA","BO","BU"],a:"BO",pic:"⚽"},
+{p:"Primeira sílaba de CASA",o:["CO","CA","CU"],a:"CA",pic:"🏠"},
+{p:"Primeira sílaba de MALA",o:["ME","MI","MA"],a:"MA",pic:"🧳"},
+{p:"Primeira sílaba de PATO",o:["PA","PE","PI"],a:"PA",pic:"🦆"},
+{p:"Primeira sílaba de SAPO",o:["SA","SO","SU"],a:"SA",pic:"🐸"},
+{p:"Primeira sílaba de DADO",o:["DE","DA","DO"],a:"DA",pic:"🎲"},
+{p:"Primeira sílaba de BOCA",o:["BU","BA","BO"],a:"BO",pic:"👄"},
+{p:"Primeira sílaba de MESA",o:["MO","ME","MA"],a:"ME",pic:"🪑"},
+{p:"Primeira sílaba de FADA",o:["FI","FA","FO"],a:"FA",pic:"🧚"},
+{p:"Primeira sílaba de LATA",o:["LU","LA","LE"],a:"LA",pic:"🥫"}],
+4:[
+{p:"Monte CASA",build:["CA","SA"],o:["CA","BO","SA","PA"],pic:"🏠"},
+{p:"Monte BOLA",build:["BO","LA"],o:["LA","PA","BO","MA"],pic:"⚽"},
+{p:"Monte PATO",build:["PA","TO"],o:["TO","PO","PA","TA"],pic:"🦆"},
+{p:"Monte MALA",build:["MA","LA"],o:["LA","ME","MA","SA"],pic:"🧳"},
+{p:"Monte SAPO",build:["SA","PO"],o:["PA","SA","PO","SO"],pic:"🐸"},
+{p:"Monte DADO",build:["DA","DO"],o:["DE","DO","DA","DI"],pic:"🎲"},
+{p:"Monte BOCA",build:["BO","CA"],o:["BO","CO","CA","BA"],pic:"👄"},
+{p:"Monte MESA",build:["ME","SA"],o:["MA","SA","ME","SO"],pic:"🪑"},
+{p:"Monte FADA",build:["FA","DA"],o:["FO","FA","DE","DA"],pic:"🧚"},
+{p:"Monte LATA",build:["LA","TA"],o:["LA","TO","TA","LU"],pic:"🥫"}],
+5:[
+{p:"Complete: G _ T O",o:["A","E","I"],a:"A",pic:"🐱"},
+{p:"Escolha a palavra da imagem",o:["CASA","MESA","MALA"],a:"CASA",pic:"🏠"},
+{p:"Organize para formar CASA",letters:["A","S","C","A"],word:"CASA",pic:"🏠"},
+{p:"Complete: B _ L A",o:["A","O","U"],a:"O",pic:"⚽"},
+{p:"Escolha a palavra da imagem",o:["LUA","RUA","BOCA"],a:"LUA",pic:"🌙"},
+{p:"Organize para formar GATO",letters:["T","A","G","O"],word:"GATO",pic:"🐱"},
+{p:"Complete: P _ T O",o:["E","A","I"],a:"A",pic:"🦆"},
+{p:"Escolha a palavra da imagem",o:["SAPO","SACO","DADO"],a:"SAPO",pic:"🐸"},
+{p:"Organize para formar MALA",letters:["A","M","L","A"],word:"MALA",pic:"🧳"},
+{p:"Complete: D A D _",o:["A","E","O"],a:"O",pic:"🎲"}]};
+document.querySelectorAll(".avatar").forEach(b=>b.onclick=()=>{document.querySelectorAll(".avatar").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");S.avatar=b.dataset.av});
+function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("on"));document.getElementById(id).classList.add("on");if(id==="map")updateMap()}
+function goSetup(){startMusic();show("setup")}
+function begin(){S.name=document.getElementById("playerName").value.trim()||"Aventureiro";document.getElementById("nameHud").textContent=S.name;document.getElementById("avatarHud").textContent=S.avatar;document.getElementById("mascot").textContent=S.avatar;save();show("map")}
+function updateMap(){document.getElementById("totalStars").textContent=S.stars;for(let i=1;i<=5;i++){let e=document.getElementById("world"+i);e.classList.toggle("lock",i>S.unlocked);e.classList.toggle("done",S.done.includes(i))}}
+function openWorld(n){if(n>S.unlocked){flash("🔒 Complete o mundo anterior!");return}S.world=n;S.q=0;S.selected=[];document.getElementById("stageBg").style.backgroundImage=`url('assets/${bgs[n]}')`;document.getElementById("banner").textContent=titles[n];show("stage");render()}
+function render(){let q=Q[S.world][S.q];document.getElementById("qnum").textContent=S.q+1;document.getElementById("stageStars").textContent=S.stars;document.getElementById("prog").style.width=(S.q*10)+"%";let h=`<div class="prompt">${q.p}</div><div class="pic">${q.pic||""}</div>`;
+if(q.build){h+=`<div class="slots" id="slots">Toque nas sílabas na ordem correta</div><div class="tiles">${q.o.map((x,i)=>`<button class="tile" onclick="pickBuild('${x}',this)">${x}</button>`).join("")}</div>`}
+else if(q.letters){h+=`<div class="slots" id="slots">Monte a palavra</div><div class="tiles">${q.letters.map(x=>`<button class="tile" onclick="pickLetter('${x}',this)">${x}</button>`).join("")}</div>`}
+else{h+=`<div class="choices">${q.o.map(x=>`<button class="choice" onclick="answer(this)">${x}</button>`).join("")}</div>`}
+document.getElementById("game").innerHTML=h}
+function answer(el){let q=Q[S.world][S.q],v=el.textContent;if(v===q.a){el.classList.add("correct");win()}else{el.classList.add("wrong");tone(180,.15);setTimeout(()=>el.classList.remove("wrong"),600)}}
+function pickBuild(v,el){let q=Q[S.world][S.q];S.selected.push(v);el.style.visibility="hidden";document.getElementById("slots").textContent=S.selected.join(" + ");if(S.selected.length===q.build.length){if(S.selected.join("|")===q.build.join("|"))win();else retry()}}
+function pickLetter(v,el){let q=Q[S.world][S.q];S.selected.push(v);el.style.visibility="hidden";document.getElementById("slots").textContent=S.selected.join(" ");if(S.selected.length===q.word.length){if(S.selected.join("")===q.word)win();else retry()}}
+function retry(){tone(180,.15);flash("🌟 Quase! Tente novamente!");S.selected=[];setTimeout(render,700)}
+function win(){S.stars++;tone(760,.12);confetti();flash(["⭐ Muito bem!","🎉 Você conseguiu!","🌈 Excelente!"][Math.floor(Math.random()*3)]);save();setTimeout(()=>{S.q++;S.selected=[];if(S.q>=10)finishWorld();else render()},850)}
+function finishWorld(){if(!S.done.includes(S.world))S.done.push(S.world);if(S.world<5){S.unlocked=Math.max(S.unlocked,S.world+1);save();confetti(45);flash("🏅 MUNDO CONCLUÍDO! Nova fase desbloqueada!");setTimeout(()=>show("map"),1300)}else{save();setTimeout(finalScreen,500)}}
+function finalScreen(){show("final");document.getElementById("congrats").textContent="PARABÉNS, "+S.name.toUpperCase()+"!";document.getElementById("stats").textContent=`Você completou os 5 mundos e conquistou ${S.stars} estrelas!`;confetti(80)}
+function flash(t){let e=document.getElementById("toast");e.textContent=t;e.classList.remove("show");void e.offsetWidth;e.classList.add("show")}
+function confetti(n=25){for(let i=0;i<n;i++){let e=document.createElement("div");e.className="conf";e.textContent=["⭐","🎉","✨","🌈","💛"][i%5];e.style.left=Math.random()*100+"vw";e.style.animationDelay=Math.random()*.5+"s";document.body.appendChild(e);setTimeout(()=>e.remove(),2400)}}
+function tone(f=440,d=.12,vol=.05){try{let c=audioCtx||(audioCtx=new (window.AudioContext||window.webkitAudioContext)());let o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.value=f;o.connect(g);g.connect(c.destination);g.gain.value=vol;o.start();g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.stop(c.currentTime+d)}catch(e){}}
+const melody=[523,659,784,659,587,698,880,698,523,659,784,1047,880,784,659,587];
+function musicTick(){if(!S.music)return;let f=melody[musicStep++%melody.length];tone(f,.28,.018)}
+function startMusic(){if(!audioCtx)tone(440,.05,.001);if(!musicTimer)musicTimer=setInterval(musicTick,360)}
+function toggleMusic(){S.music=!S.music;document.getElementById("musicStart").textContent="🎵 MÚSICA: "+(S.music?"LIGADA":"DESLIGADA");if(S.music)startMusic();save()}
+function save(){localStorage.setItem("wm_aventura_alfabeto_v2",JSON.stringify(S))}
+function resetAll(){localStorage.removeItem("wm_aventura_alfabeto_v2");location.reload()}
+window.onload=()=>{let old=localStorage.getItem("wm_aventura_alfabeto_v2");if(old){try{Object.assign(S,JSON.parse(old));document.getElementById("playerName").value=S.name;document.getElementById("nameHud").textContent=S.name;document.getElementById("avatarHud").textContent=S.avatar;document.getElementById("mascot").textContent=S.avatar;document.getElementById("musicStart").textContent="🎵 MÚSICA: "+(S.music?"LIGADA":"DESLIGADA")}catch(e){}}}
+</script>
+</body></html>
