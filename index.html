@@ -7,7 +7,8 @@
 :root{--navy:#172b55;--yellow:#ffd532;--green:#47cf3e;--blue:#33b7ff;--purple:#8d55dc;--orange:#ff8b2b}
 *{box-sizing:border-box}html,body{margin:0;height:100%;font-family:"Trebuchet MS",Arial,sans-serif;background:#75d7ff;color:var(--navy);overflow:hidden}
 button,input{font-family:inherit}.screen{display:none;position:relative;width:100vw;height:100dvh;min-height:100vh;overflow:hidden}.screen.on{display:flex}
-.bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:saturate(1.1)}
+.bg{position:absolute;inset:0;background-size:contain;background-position:center;background-repeat:no-repeat;background-color:#79d9f6;filter:saturate(1.08)}
+.screen::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,#78d9f7 0%,#a9edff 48%,#77ce68 100%)}
 .shade{position:absolute;inset:0;background:linear-gradient(#ffffff0d,#10265a22)}
 .center{position:relative;z-index:2;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:16px}
 .panel{width:min(94vw,900px);max-height:92vh;overflow:auto;background:#fffffff0;border:4px solid #fff;border-radius:28px;padding:18px;box-shadow:0 15px 40px #10265a55;text-align:center}
@@ -38,7 +39,7 @@ input{width:min(90%,420px);padding:13px;border:4px solid #62bfff;border-radius:1
 <body>
 <div id="toast" class="toast">Muito bem! ⭐</div>
 
-<section id="start" class="screen on">
+<section id="start" class="screen on" style="background:#73d7f5">
  <div class="bg" style="background-image:url('assets/capa.jpg')"></div><div class="shade"></div>
  <div class="center"><div class="panel">
   <div class="logoTitle">AVENTURA<br><em>DO</em> <b>ALFABETO</b></div>
@@ -48,7 +49,7 @@ input{width:min(90%,420px);padding:13px;border:4px solid #62bfff;border-radius:1
  </div></div><div class="brand">WM 🎮 JOGOS EDUCATIVOS</div>
 </section>
 
-<section id="setup" class="screen">
+<section id="setup" class="screen" style="background:#73d7f5">
  <div class="bg" style="background-image:url('assets/personagens.jpg')"></div><div class="shade"></div>
  <div class="center"><div class="panel">
   <h2>QUAL É O SEU NOME?</h2><input id="playerName" maxlength="16" placeholder="Digite seu nome">
@@ -58,7 +59,7 @@ input{width:min(90%,420px);padding:13px;border:4px solid #62bfff;border-radius:1
  </div></div><div class="brand">WM 🎮 JOGOS EDUCATIVOS</div>
 </section>
 
-<section id="map" class="screen">
+<section id="map" class="screen" style="background:#73d7f5">
  <div class="bg" style="background-image:url('assets/mapa.jpg')"></div><div class="shade"></div>
  <div class="hud"><button class="btn round yellow" onclick="show('start')">⌂</button><div class="chip">⭐ <span id="totalStars">0</span>/50</div></div>
  <div class="mapgrid">
@@ -70,7 +71,7 @@ input{width:min(90%,420px);padding:13px;border:4px solid #62bfff;border-radius:1
  </div><div class="brand">WM 🎮 JOGOS EDUCATIVOS</div>
 </section>
 
-<section id="stage" class="screen">
+<section id="stage" class="screen" style="background:#79d9f6">
  <div id="stageBg" class="bg"></div><div class="shade"></div>
  <div class="sceneObjects"><span class="float" style="left:7%;top:15%">🦋</span><span class="float" style="right:8%;top:20%;animation-delay:.8s">✨</span><span class="float" style="right:12%;bottom:12%;animation-delay:1.4s">🌟</span></div>
  <div class="hud"><button class="btn round yellow" onclick="show('map')">🗺️</button><div class="chip namechip"><span id="avatarHud">🧒</span> <span id="nameHud">Aventureiro</span></div><div class="chip">⭐ <span id="stageStars">0</span> | Atividade <span id="qnum">1</span>/10</div><button class="btn round blue" onclick="toggleMusic()">🎵</button></div>
@@ -78,7 +79,7 @@ input{width:min(90%,420px);padding:13px;border:4px solid #62bfff;border-radius:1
  <div id="mascot" class="mascot">🧒</div><div class="brand">WM 🎮 JOGOS EDUCATIVOS</div>
 </section>
 
-<section id="final" class="screen">
+<section id="final" class="screen" style="background:#72cffa">
  <div class="bg" style="background-image:url('assets/final.jpg')"></div><div class="shade"></div>
  <div class="center"><div class="finalCard"><div class="trophy">🏆</div><h1 id="congrats">PARABÉNS!</h1><h2>GUARDIÃO DAS PALAVRAS</h2><div class="starsRow">⭐⭐⭐⭐⭐</div><p id="stats"></p><button class="btn play" onclick="resetAll()">JOGAR NOVAMENTE</button><button class="btn blue" onclick="show('map')">🗺️ MAPA</button></div></div><div class="brand">WM 🎮 JOGOS EDUCATIVOS</div>
 </section>
