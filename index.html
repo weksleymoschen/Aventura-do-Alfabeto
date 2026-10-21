@@ -12,7 +12,7 @@ body{display:grid;place-items:center}
 #shell{width:100vw;height:100vh;display:grid;place-items:center;background:linear-gradient(180deg,#168fc9,#073f70)}
 #gameframe{position:relative;width:min(100vw,150vh);height:min(100vh,66.6667vw);aspect-ratio:3/2;background:#70d4f4;overflow:hidden;box-shadow:0 0 45px #001a36}
 .screen{display:none;position:absolute;inset:0}.screen.on{display:block}
-.art{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;user-select:none;-webkit-user-drag:none}
+.art{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#168fc9;user-select:none;-webkit-user-drag:none}
 .dim{position:absolute;inset:0;background:linear-gradient(#0016340a,#0016341b);pointer-events:none}
 button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left:1.2%;right:1.2%;display:flex;align-items:center;justify-content:space-between;gap:1%}
 .hud{display:flex;gap:.6vw;align-items:center}.chip{background:#fffffff0;border:3px solid white;border-radius:1.2vw;padding:.45em .8em;font-size:clamp(11px,1.45vw,22px);font-weight:900;box-shadow:0 .25vw .5vw #0003}
@@ -38,6 +38,21 @@ button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left
 .conf{position:absolute;z-index:90;top:-8%;font-size:2.2vw;animation:fall 1.6s linear forwards}@keyframes fall{to{transform:translateY(115vh) rotate(720deg)}}
 .finalCard{position:absolute;z-index:9;left:31%;top:14%;width:54%;height:72%;background:#fffffff0;border:.4vw solid #ffd22d;border-radius:2vw;box-shadow:0 .8vw 2vw #001b4666;text-align:center;padding:1.5%}.finalCard h1{margin:0;color:#ff8a00;font-size:clamp(24px,3.3vw,50px);text-shadow:0 .15vw #6b3100}.trophy{font-size:clamp(55px,8vw,120px);line-height:1}.cert{margin:1% auto;width:72%;background:#fff8d7;border:.25vw solid #e8b33d;border-radius:1vw;padding:2%;font-weight:900}.tiny{font-size:clamp(11px,1.35vw,20px)}
 @media(max-width:700px){.chip.namechip{display:none}}
+
+/* TELA HD PROFISSIONAL — coordenadas percentuais da arte 1536x1024 */
+.hdName{
+ position:absolute;z-index:20;left:27.0%;top:43.3%;width:31.7%;height:6.1%;
+ border:.25vw solid #39aff2;border-radius:1.2vw;background:#fff;
+ text-align:center;font-weight:900;font-size:clamp(15px,1.65vw,25px);
+ color:#172b55;outline:none;padding:0 .8em;
+}
+.hdName:focus{box-shadow:0 0 0 .22vw #fff,0 0 1vw #38baff}
+.hdAvatars{position:absolute;z-index:21;left:23.7%;top:56.2%;width:41.3%;height:17.1%;display:flex;gap:1.0%}
+.hdAvatar{height:100%;flex:1;border:.28vw solid transparent;border-radius:1.25vw;background:transparent;cursor:pointer}
+.hdAvatar.sel{border-color:#ffd126;box-shadow:0 0 0 .2vw #fff,0 0 .8vw #ffd126}
+.hdStart{position:absolute;z-index:20;left:28.1%;top:75.0%;width:30.8%;height:12.8%;border:0;background:transparent;cursor:pointer}
+.hdMusic{position:absolute;z-index:20;left:3.0%;top:85.0%;width:7.5%;height:11.5%;border:0;background:transparent;cursor:pointer}
+
 </style>
 </head>
 <body><div id="shell"><main id="gameframe">
@@ -50,19 +65,18 @@ button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left
 </section>
 
 <section id="setup" class="screen on">
-<img class="art" src="assets/selecao.webp" alt=""><div class="dim"></div>
-<div class="setup">
-<div class="wood">QUAL É O SEU NOME?</div>
-<input id="playerName" class="name" maxlength="15" placeholder="Digite seu nome">
-<div class="wood">ESCOLHA SEU PERSONAGEM</div>
-<div class="avatars">
-<button class="avatar sel" data-av="1"><img src="assets/avatar1.webp" alt="Menino"></button>
-<button class="avatar" data-av="2"><img src="assets/avatar2.webp" alt="Menina"></button>
-<button class="avatar" data-av="3"><img src="assets/avatar3.webp" alt="Menino negro"></button>
-<button class="avatar" data-av="4"><img src="assets/avatar4.webp" alt="Menina negra"></button>
+<img class="art" src="assets/tela_inicial_hd.jpg" alt="Aventura do Alfabeto">
+<!-- Campo real sobre o campo desenhado na arte. Começa SEM nome preenchido. -->
+<input id="playerName" class="hdName" maxlength="15" placeholder="Digite seu nome" autocomplete="off">
+<!-- Áreas clicáveis exatamente sobre os quatro personagens desenhados na própria arte HD. -->
+<div class="hdAvatars">
+  <button class="hdAvatar sel" data-av="1" aria-label="Menino"></button>
+  <button class="hdAvatar" data-av="2" aria-label="Menina"></button>
+  <button class="hdAvatar" data-av="3" aria-label="Menino negro"></button>
+  <button class="hdAvatar" data-av="4" aria-label="Menina negra"></button>
 </div>
-<button class="btn" onclick="begin()">▶ COMEÇAR</button>
-</div>
+<button class="hdStart" onclick="begin()" aria-label="Começar"></button>
+<button class="hdMusic" onclick="toggleMusic()" aria-label="Música"></button>
 </section>
 
 <section id="map" class="screen">
@@ -150,7 +164,7 @@ const Q={
 let S={name:"Aventureiro",avatar:1,unlocked:1,done:[],stars:0,world:1,q:0,music:true,sel:[]};
 let ctx=null,timer=null,step=0;
 const melody=[523,659,784,659,587,698,880,698,523,659,784,1047,880,784,659,587];
-document.querySelectorAll(".avatar").forEach(b=>b.onclick=()=>{document.querySelectorAll(".avatar").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");S.avatar=+b.dataset.av});
+document.querySelectorAll(".avatar,.hdAvatar").forEach(b=>b.onclick=()=>{document.querySelectorAll(".avatar,.hdAvatar").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");S.avatar=+b.dataset.av});
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));document.getElementById(id).classList.add("on");if(id==="map")updateMap()}
 function goSetup(){startMusic();show("setup");setTimeout(()=>document.getElementById("playerName").focus(),120)}
 function begin(){S.name=document.getElementById("playerName").value.trim()||"Aventureiro";document.getElementById("hudName").textContent=S.name;document.getElementById("mascotImg").src=`assets/avatar${S.avatar}.webp`;save();show("map")}
@@ -176,5 +190,5 @@ function startMusic(){if(!timer){tone(440,.03,.001);timer=setInterval(tick,390)}
 function toggleMusic(){S.music=!S.music;if(S.music)startMusic();save();toast(S.music?"🎵 Música ligada":"🔇 Música desligada")}
 function save(){localStorage.setItem("wm_aventura_alfabeto_final",JSON.stringify(S))}
 function resetGame(){localStorage.removeItem("wm_aventura_alfabeto_final");location.reload()}
-window.addEventListener("load",()=>{setTimeout(()=>document.getElementById("playerName").focus(),180);try{let x=JSON.parse(localStorage.getItem("wm_aventura_alfabeto_final")||"null");if(x)Object.assign(S,x)}catch(e){};document.getElementById("playerName").value=S.name==="Aventureiro"?"":S.name;document.getElementById("hudName").textContent=S.name;document.getElementById("mascotImg").src=`assets/avatar${S.avatar}.webp`;document.querySelectorAll(".avatar").forEach((b,i)=>b.classList.toggle("sel",i+1===S.avatar));updateMap()});
+window.addEventListener("load",()=>{setTimeout(()=>{let n=document.getElementById("playerName");if(n){n.value="";n.focus()}},120);setTimeout(()=>document.getElementById("playerName").focus(),180);try{let x=JSON.parse(localStorage.getItem("wm_aventura_alfabeto_final")||"null");if(x)Object.assign(S,x)}catch(e){};document.getElementById("playerName").value="";document.getElementById("hudName").textContent=S.name;document.getElementById("mascotImg").src=`assets/avatar${S.avatar}.webp`;document.querySelectorAll(".avatar").forEach((b,i)=>b.classList.toggle("sel",i+1===S.avatar));updateMap()});
 </script></main></div></body></html>
