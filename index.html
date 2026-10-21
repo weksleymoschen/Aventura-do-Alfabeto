@@ -59,6 +59,35 @@ button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left
 #stage .panel{border:0;box-shadow:none}
 #stage .visual{background:rgba(255,255,255,.08);border-radius:1.2vw}
 
+
+/* FASE 1 TOTALMENTE INTEGRADA AO CENÁRIO */
+#stage:has(#content .forestTargets) .panel{
+ left:0;right:0;top:0;bottom:0;background:transparent;border:0;box-shadow:none;padding:0;pointer-events:none;
+}
+#stage:has(#content .forestTargets) .progress{display:none}
+#stage:has(#content .forestTargets) .stageTitle{display:none}
+.forestPrompt{
+ position:absolute;z-index:15;left:29%;top:11%;width:49%;height:10%;
+ display:flex;align-items:center;justify-content:center;
+ background:#fffffff5;border:.28vw solid #58c8ff;border-radius:1.4vw;
+ font-size:clamp(16px,2vw,31px);font-weight:900;pointer-events:auto;
+}
+.forestTargets{position:absolute;inset:0;z-index:14;pointer-events:none}
+.logTarget{
+ position:absolute;transform:translate(-50%,-50%);width:10.5%;aspect-ratio:1;
+ border:.35vw solid #9a5725;border-radius:50%;
+ background:radial-gradient(circle,#fff4c8 0 62%,#d89a4a 64% 72%,#8a4b22 74% 100%);
+ color:#0c3978;font-size:clamp(25px,4vw,62px);font-weight:1000;
+ text-shadow:0 .08vw #fff;box-shadow:0 .35vw .55vw #0004;cursor:pointer;pointer-events:auto;
+}
+.logTarget.good{background:radial-gradient(circle,#b8ffad 0 62%,#65c84c 64% 72%,#317d2b 74% 100%)}
+.logTarget.bad{animation:shake .25s 2}
+#stage .top{z-index:40}
+#stage .top .icon:first-child{
+ background:linear-gradient(#ffd83d,#ff9c18);color:#fff;border-color:#fff;
+}
+
+#stage:has(#content .forestTargets) .mascot{display:none}
 </style>
 </head>
 <body><div id="shell"><main id="gameframe">
@@ -110,7 +139,7 @@ button,input{font-family:inherit}.top{position:absolute;z-index:20;top:1.4%;left
 </main></div>
 <script>
 const worlds=["","FLORESTA DAS VOGAIS","VILA DOS SONS","MONTANHA DAS SÍLABAS","CASTELO DAS SÍLABAS","CASTELO DAS PALAVRAS"];
-const arts=["","floresta_hd.jpg","vila_hd.jpg","montanha.webp","castelo_silabas.webp","castelo_palavras.webp"];
+const arts=["","floresta_integrada.png","vila_hd.jpg","montanha.webp","castelo_silabas.webp","castelo_palavras.webp"];
 const Q={
 1:[
 {p:"Encontre a letra A!",pic:"🌳 🦋",o:["E","A","O"],a:"A"},
@@ -180,17 +209,60 @@ if(!typed){field.focus();toast("✏️ Digite o nome da criança para começar!"
 S.name=typed;document.getElementById("hudName").textContent=S.name;document.getElementById("mascotImg").src=`assets/avatar${S.avatar}.webp`;save();show("map")}
 function updateMap(){document.getElementById("allStars").textContent=S.stars;document.querySelectorAll(".mapnode").forEach((n,i)=>{let k=i+1;n.classList.toggle("lock",k>S.unlocked);n.classList.toggle("done",S.done.includes(k))})}
 function openWorld(n){if(n>S.unlocked){toast("🔒 Complete o mundo anterior!");return}S.world=n;S.q=0;S.sel=[];document.getElementById("stageArt").src=`assets/${arts[n]}`;document.getElementById("worldTitle").textContent=worlds[n];show("stage");render()}
-function render(){let q=Q[S.world][S.q];document.getElementById("stars").textContent=S.stars;document.getElementById("counter").textContent=`${S.q+1}/10`;document.getElementById("bar").style.width=`${S.q*10}%`;let h=`<div class="prompt">${q.p}</div><div class="visual"><div class="emoji">${q.pic||""}</div>${q.label?`<div class="wordpic">${q.label}</div>`:""}</div>`;
-if(q.build){h+=`<div class="slots" id="slots">Toque nas sílabas na ordem</div><div class="tiles">${q.o.map(x=>`<button class="tile" onclick="pickBuild('${x}',this)">${x}</button>`).join("")}</div>`}
-else if(q.letters){h+=`<div class="slots" id="slots">Monte a palavra</div><div class="tiles">${q.letters.map(x=>`<button class="tile" onclick="pickLetter('${x}',this)">${x}</button>`).join("")}</div>`}
-else h+=`<div class="answers">${q.o.map(x=>`<button class="answer" data-value="${x}" onclick="answer(this)">${x}</button>`).join("")}</div>`;
-document.getElementById("content").innerHTML=h}
+function render(){
+ let q=Q[S.world][S.q];
+ document.getElementById("stars").textContent=S.stars;
+ document.getElementById("counter").textContent=`${S.q+1}/10`;
+ document.getElementById("bar").style.width=`${S.q*10}%`;
+
+ // Na Floresta, a imagem é parte da interface: os alvos ficam nas toras do cenário.
+ if(S.world===1){
+   let letters=q.o || ["A","E","I"];
+   let spots=[
+     {x:28,y:48},{x:50,y:42},{x:72,y:50},
+     {x:30,y:72},{x:52,y:70},{x:75,y:72}
+   ];
+   let h=`<div class="forestPrompt">${q.p}</div><div class="forestTargets">`;
+   letters.forEach((v,i)=>{
+     let s=spots[i];
+     h+=`<button class="logTarget" data-value="${v}" style="left:${s.x}%;top:${s.y}%"
+       onclick="answer(this)">${v}</button>`;
+   });
+   h+=`</div>`;
+   document.getElementById("content").innerHTML=h;
+   return;
+ }
+ let h=`<div class="prompt">${q.p}</div><div class="visual"><div class="emoji">${q.pic||""}</div>${q.label?`<div class="wordpic">${q.label}</div>`:""}</div>`;
+ if(q.build){h+=`<div class="slots" id="slots">Toque nas sílabas na ordem</div><div class="tiles">${q.o.map(x=>`<button class="tile" onclick="pickBuild('${x}',this)">${x}</button>`).join("")}</div>`}
+ else if(q.letters){h+=`<div class="slots" id="slots">Monte a palavra</div><div class="tiles">${q.letters.map(x=>`<button class="tile" onclick="pickLetter('${x}',this)">${x}</button>`).join("")}</div>`}
+ else h+=`<div class="answers">${q.o.map(x=>`<button class="answer" data-value="${x}" onclick="answer(this)">${x}</button>`).join("")}</div>`;
+ document.getElementById("content").innerHTML=h
+}
 function answer(el){let q=Q[S.world][S.q],v=el.dataset.value;if(v===q.a){el.classList.add("good");success()}else{el.classList.add("bad");tone(180,.14,.045);toast("🌟 Quase! Tente outra vez.");setTimeout(()=>el.classList.remove("bad"),600)}}
 function pickBuild(v,el){let q=Q[S.world][S.q];S.sel.push(v);el.style.visibility="hidden";document.getElementById("slots").textContent=S.sel.join(" + ");if(S.sel.length===q.build.length){S.sel.join("|")===q.build.join("|")?success():retry()}}
 function pickLetter(v,el){let q=Q[S.world][S.q];S.sel.push(v);el.style.visibility="hidden";document.getElementById("slots").textContent=S.sel.join(" ");if(S.sel.length===q.word.length){S.sel.join("")===q.word?success():retry()}}
 function retry(){tone(180,.14,.045);toast("✨ Vamos tentar novamente!");S.sel=[];setTimeout(render,650)}
-function success(){S.stars++;tone(784,.12,.05);confetti(22);toast(["⭐ Muito bem!","🎉 Você conseguiu!","🌈 Excelente!"][Math.floor(Math.random()*3)]);save();setTimeout(()=>{S.q++;S.sel=[];S.q>=10?finishWorld():render()},850)}
-function finishWorld(){if(!S.done.includes(S.world))S.done.push(S.world);if(S.world<5){S.unlocked=Math.max(S.unlocked,S.world+1);save();confetti(55);toast("🏅 MUNDO CONCLUÍDO!");setTimeout(()=>show("map"),1200)}else{save();setTimeout(finishGame,450)}}
+let lockedAnswer=false;
+function success(){
+ if(lockedAnswer)return;
+ lockedAnswer=true;
+ S.stars=Math.min(50,S.stars+1);
+ tone(784,.12,.05);confetti(22);
+ toast(["⭐ Muito bem!","🎉 Você conseguiu!","🌈 Excelente!"][Math.floor(Math.random()*3)]);
+ save();
+ setTimeout(()=>{
+   S.q++;S.sel=[];lockedAnswer=false;
+   if(S.q>=10){finishWorld()}else{render()}
+ },700)
+}
+function finishWorld(){
+ if(!S.done.includes(S.world))S.done.push(S.world);
+ if(S.world<5){
+   S.unlocked=S.world+1;
+   save(); updateMap(); confetti(55); toast("🏅 MUNDO CONCLUÍDO! Nova fase liberada!");
+   setTimeout(()=>show("map"),1000);
+ }else{save();setTimeout(finishGame,450)}
+}
 function finishGame(){show("final");document.getElementById("finalTitle").textContent=`PARABÉNS, ${S.name.toUpperCase()}!`;document.getElementById("finalText").textContent=`Você concluiu os 5 mundos da Aventura do Alfabeto e conquistou ${S.stars} estrelas.`;confetti(80)}
 function toast(t){let e=document.getElementById("toast");e.textContent=t;e.classList.remove("show");void e.offsetWidth;e.classList.add("show")}
 function confetti(n=20){for(let i=0;i<n;i++){let e=document.createElement("div");e.className="conf";e.textContent=["⭐","🎉","✨","🌈"][i%4];e.style.left=Math.random()*100+"%";e.style.animationDelay=Math.random()*.4+"s";document.getElementById("gameframe").appendChild(e);setTimeout(()=>e.remove(),2100)}}
